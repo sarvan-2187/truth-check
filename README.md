@@ -2,7 +2,6 @@
 
 A Retrieval-Augmented Generation (RAG) based system that analyzes news content and determines whether it is likely **real, misleading, or fake**. The system retrieves contextual evidence from a knowledge base and uses a Large Language Model to generate a fact-aware explanation.
 
----
 
 ## Project Structure
 
@@ -14,7 +13,6 @@ truth-check/
 └── README.md
 ```
 
----
 
 ## Overview
 
@@ -32,7 +30,6 @@ The workflow follows the RAG pipeline:
    * **Confidence**
    * **Explanation with evidence**
 
----
 
 ## Features
 
@@ -43,13 +40,12 @@ The workflow follows the RAG pipeline:
 * Modern web interface
 * Modular backend architecture
 
----
 
 ## Tech Stack
 
 ### Frontend
 
-* JavaScript / React (or Next.js)
+* React + Vite
 * TailwindCSS
 * API integration with backend
 
@@ -61,8 +57,6 @@ The workflow follows the RAG pipeline:
 * Sentence Transformers (embeddings)
 * Groq LLM API
 
----
-
 ## Installation
 
 ### 1. Clone the repository
@@ -71,8 +65,6 @@ The workflow follows the RAG pipeline:
 git clone https://github.com/your-username/truth-check.git
 cd truth-check
 ```
-
----
 
 ### 2. Backend Setup
 
