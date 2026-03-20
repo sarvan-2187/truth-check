@@ -1,15 +1,16 @@
-from fastapi import APIRouter
+from fastapi import APIRouter, Depends
 from app.models.schemas import AnalyzeRequest, AnalyzeResponse
 from app.services.rag_pipeline import run_pipeline
 from app.services.url_scraper import scrape_article
 from app.core.config import settings
+from app.core.firebase_auth import get_current_user
 import uuid
 from datetime import datetime
 
 router = APIRouter(prefix="/api", tags=["analyze"])
 
 @router.post("/analyze", response_model=AnalyzeResponse)
-async def analyze(req: AnalyzeRequest):
+async def analyze(req: AnalyzeRequest, current_user: dict = Depends(get_current_user)):
     if req.input_type == "url":
         content = scrape_article(req.content)
     elif req.input_type == "pdf_id":

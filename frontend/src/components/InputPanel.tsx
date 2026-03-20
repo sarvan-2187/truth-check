@@ -7,7 +7,7 @@ import { Type, Link as LinkIcon, FileText, Upload, Sparkles, Globe, FileUp } fro
 import { cn } from "@/lib/utils";
 
 interface Props {
-  onAnalyze: (type: "text" | "url" | "pdf", value: string | File) => void;
+  onAnalyze: (type: "text" | "url" | "pdf", value: string | File) => void | Promise<void>;
   isLoading: boolean;
 }
 

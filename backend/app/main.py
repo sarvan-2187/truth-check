@@ -4,6 +4,7 @@ from app.core.config import settings
 from app.routers import analyze, ingest, history
 from app.models.db_models import Base
 from sqlalchemy.ext.asyncio import create_async_engine
+import app.core.firebase_auth  # noqa: F401  — initialises Firebase Admin SDK
 
 app = FastAPI(title="Fake News Detector API", version="1.0.0")
 

@@ -6,6 +6,7 @@ venv/
 .env/
 ENV/
 env/
+vev/
 
 # Python cache
 __pycache__/
@@ -40,3 +41,5 @@ Thumbs.db
 # Temporary files
 *.tmp
 *.swp
+
+truth-check-50296-firebase-adminsdk-fbsvc-494f0d1328.json

@@ -1,7 +1,18 @@
 import axios from "axios";
+import { getAuth } from "firebase/auth";
 
 const BASE = import.meta.env.VITE_API_URL ?? "http://localhost:8000";
 const api = axios.create({ baseURL: BASE });
+
+// Attach Firebase ID token to every outgoing request
+api.interceptors.request.use(async (config) => {
+  const user = getAuth().currentUser;
+  if (user) {
+    const token = await user.getIdToken();
+    config.headers.Authorization = `Bearer ${token}`;
+  }
+  return config;
+});
 
 export const analyzeText = (content: string) =>
   api.post("/api/analyze", { input_type: "text", content });

@@ -7,6 +7,7 @@ class Settings(BaseSettings):
     CHROMA_PATH: str = "./data/chroma_db"
     SQLITE_URL: str = "sqlite+aiosqlite:///./data/history.db"
     CORS_ORIGINS: list[str] = ["http://localhost:5173"]
+    GOOGLE_APPLICATION_CREDENTIALS: str = "./firebase-service-account.json"
 
     class Config:
         env_file = ".env"
