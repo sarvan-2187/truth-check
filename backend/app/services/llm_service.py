@@ -6,7 +6,8 @@ import json
 SYSTEM_PROMPT = """
 You are an expert fact-checker and misinformation analyst.
 Given an article or text AND relevant context retrieved from a knowledge base,
-analyze it and return ONLY a valid JSON object with this exact structure:
+analyze it and return ONLY a valid JSON object with this exact structure (and NOTHING else):
+
 {
   "verdict": "REAL" | "FAKE" | "MISLEADING" | "UNVERIFIABLE",
   "confidence": <float between 0.0 and 1.0>,
@@ -15,7 +16,14 @@ analyze it and return ONLY a valid JSON object with this exact structure:
   "supporting_evidence": ["<evidence supporting credibility 1>", "<evidence 2>"],
   "retrieved_sources": ["<relevant chunk excerpt 1>", "<excerpt 2>"]
 }
-Return ONLY the JSON. No markdown, no preamble, no explanation outside the JSON.
+
+CRITICAL RULES:
+1. Return ONLY valid JSON - no markdown, no code blocks, no preamble, no explanation
+2. Every field must be present in the JSON
+3. The verdict field must be one of: REAL, FAKE, MISLEADING, or UNVERIFIABLE
+4. Confidence must be a number between 0.0 and 1.0
+5. All array fields must contain at least one element
+6. All string values must be properly escaped JSON strings
 """
 
 llm = ChatGroq(
@@ -43,4 +51,26 @@ Analyze the content above against the retrieved context and return your JSON ver
     ])
 
     raw = response.content.strip()
-    return json.loads(raw)
+    
+    # Handle markdown code blocks
+    if raw.startswith("```"):
+        # Extract JSON from markdown code blocks
+        lines = raw.split("\n")
+        json_lines = []
+        in_json_block = False
+        for line in lines:
+            if line.startswith("```"):
+                in_json_block = not in_json_block
+                continue
+            if in_json_block:
+                json_lines.append(line)
+        raw = "\n".join(json_lines).strip()
+    
+    # Debug logging
+    if not raw:
+        raise ValueError(f"LLM returned empty response. Raw content: '{response.content}'")
+    
+    try:
+        return json.loads(raw)
+    except json.JSONDecodeError as e:
+        raise ValueError(f"Failed to parse LLM response as JSON. Raw response: '{raw}'. Error: {e}")
